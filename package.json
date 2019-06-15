@@ -1,0 +1,23 @@
+{
+  "name": "car-physics",
+  "version": "1.0.0",
+  "description": "Car Physics Demonstration for Physics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimplyBallistic/car-physics.git"
+  },
+  "author": "Ryan Samarakoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SimplyBallistic/car-physics/issues"
+  },
+  "homepage": "https://github.com/SimplyBallistic/car-physics#readme",
+  "dependencies": {
+    "matter-js": "^0.14.2",
+    "p5": "^0.8.0"
+  }
+}
