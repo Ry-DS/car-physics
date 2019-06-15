@@ -1,30 +1,36 @@
-const {Engine, World, Bodies, Mouse, MouseConstraint, Constraint} = Matter;
-let engine, world;
-let ground;
-let box;
-let mConstraint;
+let stopImg,carImg;
+let car;
+let lastTick=new Date().getTime(),delta;
+let PPM=30;//pixels per meter. In order to keep simulations realistic
+//20 meters from stop sign
+function preload(){
+    stopImg=loadImage('assets/stop_sign.png');
+    carImg=loadImage('assets/car.png');
 
-function setup() {
-    let canvas = createCanvas(windowWidth - 10, windowHeight - 50);
-    engine = Engine.create();
-    world = engine.world;
-    ground = new Ground(width / 2, height - 10, width, 20);
-    box = new Box(width / 2, 0, 20, 20);
-    const mouse = Mouse.create(canvas.elt);
-    const options = {
-        mouse: mouse,
-    };
 
-    // A fix for HiDPI displays
-    mouse.pixelRatio = pixelDensity();
-    mConstraint = MouseConstraint.create(engine, options);
-    World.add(world, mConstraint);
 }
 
-function draw() {
-    background(51);
-    Engine.update(engine);
-    ground.show();
-    box.show();
+function setup(){
+    const canvas=createCanvas(windowWidth-10,windowHeight/1.2);
+    car=new Car(carImg);
+
+}
+function draw(){
+    const time=new Date().getTime();
+    delta=(time-lastTick)/1000;
+    background(34,128,178);//sky blue
+    noStroke();
+    //ground
+    fill(51);
+    rect(0,height-20,width,20);
+    //Stop Sign
+    image(stopImg,PPM,height-20- (2.13*PPM),0.76*PPM,0.76*PPM);//real stop sign dimensions
+    fill(80);
+    rect(PPM*1.34,height-20-((2.13-0.76)*PPM),0.1*PPM,(2.13-0.76)*PPM);
+    //car
+    car.show();
+    lastTick=time;
+
+
 
 }
