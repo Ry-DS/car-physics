@@ -2,6 +2,8 @@ let stopImg,carImg;
 let car;
 let lastTick=new Date().getTime(),delta;
 let PPM=30;//pixels per meter. In order to keep simulations realistic
+let slider;
+let stats;
 //20 meters from stop sign
 function preload(){
     stopImg=loadImage('assets/stop_sign.png');
@@ -13,6 +15,8 @@ function preload(){
 function setup(){
     const canvas=createCanvas(windowWidth-10,windowHeight/1.2);
     car=new Car(carImg);
+    slider = createSlider(-30, 4, -17);
+    stats = createElement("p", "");
 
 }
 function draw(){
@@ -29,8 +33,19 @@ function draw(){
     rect(PPM*1.34,height-20-((2.13-0.76)*PPM),0.1*PPM,(2.13-0.76)*PPM);
     //car
     car.show();
+    car.acc = slider.value();
+
+    stats.html(`${format(car.vel)} m/s : speed<br>
+                    ${format(car.acc)} m/s/s : acceleration<br>
+                    ${format(car.time)} seconds past<br>
+                    ${format(car.distance)} meters travelled<br>`);
+
     lastTick=time;
 
 
 
+}
+
+function format(number) {
+    return Number(number).toFixed(2);
 }
