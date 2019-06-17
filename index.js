@@ -14,7 +14,7 @@ function preload(){
 
 function setup(){
     const canvas = createCanvas(windowWidth - 10, windowHeight / 1.5);
-    PPM = width / 63;//canvas is 100 meters long
+    PPM = width / 63;//canvas is x meters long
     car=new Car(carImg);
     slider = createSlider(-10.5, 4, -6.5);
     stats = createElement("p", "");
