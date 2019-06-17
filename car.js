@@ -7,7 +7,7 @@ class Car{
         this.img=img;
         this.ratio=this.realHeight/this.realWidth;
 
-        this.calculatePixelDimenisons();
+        this.calculatePixelDimensions();
         this.pos = (width - this.width) / PPM;
 
         this.vel = 27;//in ms^-1, around 40-50km/h 27
@@ -38,7 +38,7 @@ class Car{
 
     }
 
-    calculatePixelDimenisons() {
+    calculatePixelDimensions() {
         this.width = this.realWidth * PPM;
         this.height = this.width * this.ratio;//scale img correctly
     }
