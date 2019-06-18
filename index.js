@@ -4,7 +4,6 @@ let lastTick=new Date().getTime(),delta;
 let PPM;//pixels per meter. In order to keep simulations realistic
 let slider;
 let stats;
-//20 meters from stop sign
 function preload(){
     stopImg=loadImage('assets/stop_sign.png');
     carImg=loadImage('assets/car.png');
