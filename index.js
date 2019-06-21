@@ -19,14 +19,13 @@ function setup(){
     const canvas = createCanvas(windowWidth - 10, windowHeight / 1.5);
     PPM = width / 63;//canvas is x meters long
     car=new Car(carImg);
-    accSlider = createSlider(-10.5, 4, -6.5);
+    accSlider = createSlider(car.maxDecel, car.maxAcc, car.maxAcc);
     stats = createElement("p", "");
 
 }
 function draw(){
     const time=new Date().getTime();
     delta=(time-lastTick)/1000;
-
     background(34,128,178);//sky blue
 
     noStroke();
@@ -39,12 +38,25 @@ function draw(){
     rect(PPM*1.34,height-20-((2.13-0.76)*PPM),0.1*PPM,(2.13-0.76)*PPM);
     //car
     car.show();
-    car.acc = accSlider.value();
+    if (car.wattsLost < car.maxEngineWatts || accSlider.value() < 0)
+        car.acc = accSlider.value();
+    else car.acc = 0;
     if (frameCount % (mobile ? 5 : 1) === 0)
-    stats.html(`${format(car.vel)} m/s : speed<br>
-                    ${format(car.acc)} m/s/s : acceleration<br>
-                    ${format(car.time)} seconds past<br>
-                    ${format(car.distance)} meters travelled<br>`);
+        stats.html(`${format(car.vel)} m/s : ${format(car.vel * 3.6)} km/h : speed<br>
+                    ${kFormatter(car.acc)} m/s/s : acceleration<br>
+                    ${kFormatter(car.time)} seconds past<br>
+                    ${kFormatter(car.distance)} meters travelled<br>
+                    ${kFormatter(-car.dragForce())} drag force<br>
+                    ${kFormatter(-car.rollingFrictionForce())} rolling friction force<br>
+                    ${kFormatter(car.engineForce())} engine force<br>
+                    ${kFormatter(car.totalForce())} total force<br>
+                    ${kFormatter(car.wattsUsed)} watts used<br>
+                    ${kFormatter(car.totalEnergyUsed)} total energy used<br>
+                    ${kFormatter(car.totalEnergyUsed / energyIn1LPetrol)} liters of petrol<br>
+
+
+
+`);
 
     lastTick=time;
 
@@ -65,3 +77,8 @@ function isMobile() {//https://stackoverflow.com/questions/11381673/detecting-a-
 
     return mobile;
 }
+
+function kFormatter(num) {//https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+    return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : format(num)
+}
+    
