@@ -6,6 +6,7 @@ let PPM;//pixels per meter. In order to keep simulations realistic
 let accSlider;
 let stats;
 
+const gasPricePerLiter = 1.44;
 
 function preload(){
     stopImg=loadImage('assets/stop_sign.png');
@@ -48,11 +49,12 @@ function draw(){
                     ${kFormatter(car.distance)} meters travelled<br>
                     ${kFormatter(-car.dragForce())} drag force<br>
                     ${kFormatter(-car.rollingFrictionForce())} rolling friction force<br>
-                    ${kFormatter(car.engineForce())} engine force<br>
+                    ${kFormatter(car.engineForce())} engine/brakes force<br>
                     ${kFormatter(car.totalForce())} total force<br>
                     ${kFormatter(car.wattsUsed)} watts used<br>
                     ${kFormatter(car.totalEnergyUsed)} total energy used<br>
                     ${kFormatter(car.totalEnergyUsed / energyIn1LPetrol)} liters of petrol<br>
+                    ${'$' + kFormatter((car.totalEnergyUsed / energyIn1LPetrol) * gasPricePerLiter)} money used<br>
 
 
 
