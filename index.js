@@ -51,7 +51,7 @@ function draw(){
                     ${kFormatter(-car.rollingFrictionForce())} rolling friction force<br>
                     ${kFormatter(car.engineForce())} engine/brakes force<br>
                     ${kFormatter(car.totalForce())} total force<br>
-                    ${kFormatter(car.wattsUsed)} watts used<br>
+                    ${kFormatter(car.wattsLost)} watts used<br>
                     ${kFormatter(car.totalEnergyUsed)} total energy used<br>
                     ${kFormatter(car.totalEnergyUsed / energyIn1LPetrol)} liters of petrol<br>
                     ${'$' + kFormatter((car.totalEnergyUsed / energyIn1LPetrol) * gasPricePerLiter)} money used<br>
