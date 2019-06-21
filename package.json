@@ -16,8 +16,5 @@
     "url": "https://github.com/SimplyBallistic/car-physics/issues"
   },
   "homepage": "https://github.com/SimplyBallistic/car-physics#readme",
-  "dependencies": {
-    "matter-js": "^0.14.2",
-    "p5": "^0.8.0"
-  }
+  "dependencies": {}
 }

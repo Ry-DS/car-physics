@@ -1,15 +1,18 @@
+const energyIn1LPetrol = 34920000;
 class Car{
     constructor(img){
-
-        this.realWidth=4.95;//real volvo xc90 dimensions
+        //car stats
+        this.realWidth = 4.95;//real volvo xc90 dimensions in meters
         this.realHeight=1.776;
+        this.mass = 2184;//mass in kg
+        this.energyUsedPerMeter = (9.3 * energyIn1LPetrol) / 100000;//amount of petrol the car uses to go 1m extra urban
 
         this.img=img;
         this.ratio=this.realHeight/this.realWidth;
-
         this.calculatePixelDimensions();
-        this.pos = (width - this.width) / PPM;
 
+
+        this.pos = (width - this.width) / PPM;
         this.vel = 27;//in ms^-1, around 40-50km/h 27
         this.acc = -17.47;//in ms^-2, max xc90 acceleration is 3.47ms^2
         this.time = 0;
@@ -17,12 +20,13 @@ class Car{
 
 
     }
+
     show(){
         image(this.img, this.pos * PPM, height - this.height - 20, this.width, this.height);
         //ticking values
         this.pos -= this.vel * delta;
         if (this.vel < 28 && this.acc > 0 || this.acc < 0 && this.vel > 0)//stop before 100km/h and don't go backwards
-        this.vel+=this.acc*delta;
+            this.vel += this.acc * delta;
         this.time += delta;
         this.distance += this.vel * delta;
         //resetting
@@ -35,6 +39,7 @@ class Car{
             }
 
         }
+
 
     }
 
