@@ -19,7 +19,7 @@ function setup(){
     isMobile();
     const canvas = createCanvas(windowWidth - 10, windowHeight / 1.5);
     PPM = width / 63;//canvas is x meters long
-    car=new Car(carImg);
+    car = new BetterCar(carImg);
     accSlider = createSlider(car.maxDecel, car.maxAcc, car.maxAcc);
     stats = createElement("p", "");
 
