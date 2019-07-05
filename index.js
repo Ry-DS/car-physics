@@ -4,7 +4,7 @@ let lastTick = new Date().getTime();
 let delta;
 let PPM;//pixels per meter. In order to keep simulations realistic
 let accSlider;
-let stats;
+let stats, button;
 
 const gasPricePerLiter = 1.44;
 
@@ -20,9 +20,17 @@ function setup(){
     const canvas = createCanvas(windowWidth - 10, windowHeight / 1.5);
     PPM = width / 63;//canvas is x meters long
     car = new Car(carImg);
-    accSlider = createSlider(car.maxDecel, car.maxAcc, car.maxAcc);
-    stats = createElement("p", "");
+    accSlider = createSlider(car.maxDecel, car.maxAcc, 0);
 
+    button = createButton('Reset');
+    button.mousePressed(() => {
+        car.pos = (width) / PPM;
+        car.vel = 27.77;
+        car.distance = 0;
+        car.time = 0;
+        car.totalEnergyUsed = 0;
+    });
+    stats = createElement("p", "");
 }
 function draw(){
     const time=new Date().getTime();
@@ -39,9 +47,16 @@ function draw(){
     rect(PPM*1.34,height-20-((2.13-0.76)*PPM),0.1*PPM,(2.13-0.76)*PPM);
     //car
     car.show();
-    if (car.wattsLost < car.maxEngineWatts || accSlider.value() < 0)
-        car.acc = accSlider.value();
-    else car.acc = 0;
+
+    //if the watts is good, do it
+    //if the vel is 0 or close, acc is 0,
+    //if the slider is braking, let it happen except when vel is 0.
+    if ((car.wattsLost >= car.maxEngineWatts && accSlider.value() > 0) || car.vel <= 0) {
+        car.acc = 0;
+        if (car.vel <= 0)
+            car.vel = 0;
+
+    } else car.acc = accSlider.value();
     if (frameCount % (mobile ? 5 : 1) === 0)
         stats.html(`${format(car.vel)} m/s : ${format(car.vel * 3.6)} km/h : speed<br>
                     ${kFormatter(car.acc)} m/s/s : acceleration<br>

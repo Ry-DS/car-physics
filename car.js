@@ -5,7 +5,6 @@ class Car{
         this.realWidth = 4.95;//real volvo xc90 dimensions in meters
         this.realHeight=1.776;
         this.mass = 2184;//mass in kg
-        this.energyUsedPerMeter = (9.3 * energyIn1LPetrol) / 100000;//amount of petrol the car uses to go 1m extra urban
         this.maxAcc = (100 / 3.6) / 10;
         this.maxDecel = -Math.pow(100 / 3.6, 2) / (2 * 36);
         this.maxEngineWatts = 150000;
@@ -38,7 +37,8 @@ class Car{
         this.pos -= this.vel * delta;
         if (this.acc > 0 || this.acc < 0 && this.vel > 0)//stop before 100km/h and don't go backwards
             this.vel += this.acc * delta;
-        this.time += delta;
+        if (this.vel !== 0)
+            this.time += delta;
         this.distance += this.vel * delta;
         //forces
         let dragWatts = Math.abs((this.dragForce() * (this.distance - this.prevDistance)) / delta);
@@ -49,15 +49,9 @@ class Car{
         this.totalEnergyUsed += this.wattsUsed * delta;
 
         //resetting
-        if (this.pos < -this.realWidth || this.vel < 0) {
-            this.pos = (width) / PPM;
-            if (this.vel < 0) {
-                this.vel = 27.77;
-                this.distance = 0;
-                this.time = 0;
-                this.totalEnergyUsed = 0;
-            }
+        if (this.pos < -this.realWidth) {
 
+            car.pos = (width) / PPM;
         }
 
 
