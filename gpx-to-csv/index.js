@@ -1,4 +1,4 @@
-const {aggressive, conservative} = require('./files');
+const {aggressive, conservative} = require('./files2');
 const fs = require('fs');
 
 function writeCsvFromGpx(gpxFile, fileName) {
@@ -14,7 +14,7 @@ function writeCsvFromGpx(gpxFile, fileName) {
     });
 }
 
-//writeCsvFromGpx(aggressive,'aggressive');
+writeCsvFromGpx(aggressive, 'aggressive');
 writeCsvFromGpx(conservative, 'conservative');
 
 
