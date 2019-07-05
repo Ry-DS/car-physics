@@ -8,6 +8,8 @@ class Car{
         this.maxAcc = (100 / 3.6) / 10;
         this.maxDecel = -Math.pow(100 / 3.6, 2) / (2 * 36);
         this.maxEngineWatts = 150000;
+        //simulation stats
+        this.initialSpeed = 100 / 3.6;
 
         //forces
         this.weightForce = this.mass * 9.8;

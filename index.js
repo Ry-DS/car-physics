@@ -5,6 +5,7 @@ let delta;
 let PPM;//pixels per meter. In order to keep simulations realistic
 let accSlider;
 let stats, button;
+let inputs = {};
 
 const gasPricePerLiter = 1.44;
 
@@ -20,19 +21,30 @@ function setup(){
     const canvas = createCanvas(windowWidth - 10, windowHeight / 1.5);
     PPM = width / 63;//canvas is x meters long
     car = new Car(carImg);
+
+    putInput('mass', 0, car.mass);
+    putInput('maxEngineWatts', 1, car.maxEngineWatts);
+    putInput('realWidth', 2, car.realWidth);
+    putInput('realHeight', 3, car.realHeight);
+    putInput('initialSpeed', 4, car.initialSpeed);
+
     accSlider = createSlider(car.maxDecel, car.maxAcc, 0);
 
     button = createButton('Reset');
+
     button.mousePressed(() => {
         car.pos = (width) / PPM;
-        car.vel = 27.77;
+        car.vel = car.initialSpeed;
         car.distance = 0;
         car.time = 0;
         car.totalEnergyUsed = 0;
     });
     stats = createElement("p", "");
 }
+
+
 function draw(){
+    setValuesFromInput();
     const time=new Date().getTime();
     delta=(time-lastTick)/1000;
     background(34,128,178);//sky blue
@@ -56,7 +68,10 @@ function draw(){
         if (car.vel <= 0)
             car.vel = 0;
 
-    } else car.acc = accSlider.value();
+    } else {
+        car.acc = accSlider.value();
+
+    }
     if (frameCount % (mobile ? 5 : 1) === 0)
         stats.html(`${format(car.vel)} m/s : ${format(car.vel * 3.6)} km/h : speed<br>
                     ${kFormatter(car.acc)} m/s/s : acceleration<br>
@@ -80,6 +95,10 @@ function draw(){
 
 }
 
+function setValuesFromInput() {
+
+}
+
 function format(number) {
     return Number(number).toFixed(2);
 }
@@ -97,5 +116,22 @@ function isMobile() {//https://stackoverflow.com/questions/11381673/detecting-a-
 
 function kFormatter(num) {//https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
     return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : format(num)
+}
+
+function putInput(name, index, def) {
+    let title = createElement('p');
+    title.html(name);
+    title.position(10, index * 40);
+    inputs[name] = createInput();
+    inputs[name].position(10, index * 40 + 35);
+    inputs[name].value(def);
+    inputs[name].elt.onkeydown = (e) => {
+        if (!/^-?\d*[.,]?\d*$/.test(inputs[name].value() + e.key) && e.key.length === 1)
+            e.preventDefault();
+        else car[name] = parseFloat(inputs[name].value() + e.key);
+        car.calculatePixelDimensions();
+    };
+
+
 }
     
