@@ -128,7 +128,7 @@ function putInput(name, index, def) {
     inputs[name].elt.onkeydown = (e) => {
         if (!/^-?\d*[.,]?\d*$/.test(inputs[name].value() + e.key) && e.key.length === 1)
             e.preventDefault();
-        else car[name] = parseFloat(inputs[name].value() + e.key);
+        else setTimeout(() => car[name] = parseFloat(inputs[name].value()), 10);
         car.calculatePixelDimensions();
     };
 
