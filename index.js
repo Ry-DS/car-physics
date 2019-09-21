@@ -1,7 +1,7 @@
 let stopImg,carImg;
 let car;
 let lastTick = new Date().getTime();
-let delta;
+let delta,maxDelta=0;
 let PPM;//pixels per meter. In order to keep simulations realistic
 let accSlider;
 let stats, button;
@@ -32,21 +32,38 @@ function setup(){
 
     button = createButton('Reset');
 
-    button.mousePressed(() => {
+    button.elt.onclick=() => {
         car.pos = (width) / PPM;
         car.vel = car.initialSpeed;
         car.distance = 0;
         car.time = 0;
         car.totalEnergyUsed = 0;
-    });
+    };
     stats = createElement("p", "");
 }
 
 
+let data={};
+let i=0;
+function automate() {
+    if(car.vel>0)
+        return;
+    frameRate(1000);
+    data[i-100]=car.totalEnergyUsed;
+    button.elt.click();
+    inputs.mass.value(i);
+    inputs.mass.elt.onkeydown({key: '3'});
+    i+=100;
+    console.log(data);
+}
+
 function draw(){
+    
     setValuesFromInput();
     const time=new Date().getTime();
     delta=(time-lastTick)/1000;
+    if(delta>maxDelta)
+        maxDelta=delta;
     background(34,128,178);//sky blue
 
     noStroke();
@@ -128,7 +145,7 @@ function putInput(name, index, def) {
     inputs[name].elt.onkeydown = (e) => {
         if (!/^-?\d*[.,]?\d*$/.test(inputs[name].value() + e.key) && e.key.length === 1)
             e.preventDefault();
-        else setTimeout(() => car[name] = parseFloat(inputs[name].value()), 10);
+        else setTimeout(() => car[name] = parseFloat(inputs[name].value()), 1);
         car.calculatePixelDimensions();
     };
 

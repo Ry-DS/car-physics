@@ -33,6 +33,7 @@ class Car{
     }
 
     show(){
+        let firstRun=this.pos===(width)/PPM;
         image(this.img, this.pos * PPM, height - this.height - 20, this.width, this.height);
         //ticking values
         this.prevDistance = this.distance;
@@ -45,10 +46,14 @@ class Car{
         //forces
         let dragWatts = Math.abs((this.dragForce() * (this.distance - this.prevDistance)) / delta);
         let frictionWatts = Math.abs((this.rollingFrictionForce() * (this.distance - this.prevDistance)) / delta);
-        let engineWatts = Math.abs((this.engineForce() * (this.distance - this.prevDistance)) / delta);
+        let engineWatts = (this.engineForce() * (this.distance - this.prevDistance)) / delta;
         this.wattsLost = dragWatts + frictionWatts;
         this.wattsUsed = engineWatts;
-        this.totalEnergyUsed += this.wattsUsed * delta;
+        /*if(this.wattsUsed>0&&this.vel>0&&!firstRun){
+            this.totalEnergyUsed += this.wattsUsed * delta;
+            console.log(this.wattsUsed+" "+engineWatts+" "+this.engineForce());
+        }*/
+        this.totalEnergyUsed+=dragWatts*delta;
 
         //resetting
         if (this.pos < -this.realWidth) {
